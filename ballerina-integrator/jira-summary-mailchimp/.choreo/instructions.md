@@ -45,24 +45,3 @@ Reference:
 - [Messages API reference](https://mailchimp.com/developer/transactional/api/messages/)
 
 </details>
-
-## Configuration
-
-### `jiraConfig`
-
-- `username`: Atlassian account email
-- `password`: Atlassian API token
-- `domain`: Jira Cloud domain (the `<domain>` part of `https://<domain>.atlassian.net`)
-- `jqlQuery`: JQL query used to pick issues for the summary
-
-### `mailchimpConfig`
-
-- `mandrillApiKey`: Mailchimp Transactional API key
-- `fromEmail`: sender email address
-- `fromName`: sender display name
-- `recipients`: list of recipient email addresses
-
-### `maxIssuesToDisplay`
-
-- Maximum number of Jira issues to include in the email summary (default: `5`).
-

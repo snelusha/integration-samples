@@ -64,8 +64,8 @@ function generateEmailHtml(Issue[] issues, int remainingCount) returns string {
         string assigneeSection = "";
         if issue.assignee is IssueAssignee {
             IssueAssignee assignee = <IssueAssignee>issue.assignee;
-            assigneeSection = string `
-                <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+            assigneeSection = assignee.avatarUrl != ""
+                ? string `<table role="presentation" cellspacing="0" cellpadding="0" border="0">
                     <tr>
                         <td valign="middle" style="padding-right:6px;">
                             <img src="${assignee.avatarUrl}"
@@ -77,7 +77,7 @@ function generateEmailHtml(Issue[] issues, int remainingCount) returns string {
                             ${assignee.displayName}
                         </td>
                     </tr>
-                </table>`;
+                </table>` : string `<span style="${FONT_SANS}font-size:12px;${STYLE_TEXT_SECONDARY}">${assignee.displayName}</span>`;
         } else {
             assigneeSection = string `<span style="${FONT_MONO}font-size:11px;${STYLE_TEXT_MUTED}">Unassigned</span>`;
         }
@@ -191,7 +191,7 @@ function generateEmailHtml(Issue[] issues, int remainingCount) returns string {
             </tr>`
         : "";
 
-    int issueCount = issues.length();
+    int totalCount = issues.length() + remainingCount;
 
     return string `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
@@ -212,7 +212,7 @@ function generateEmailHtml(Issue[] issues, int remainingCount) returns string {
 </head>
 <body style="margin:0;padding:0;background-color:${COLOR_WHITE};">
     <div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">
-        ${issueCount} Jira issue${issueCount > 1 ? "s" : ""} require your attention
+        ${totalCount} Jira issue${totalCount > 1 ? "s" : ""} require your attention
     </div>
 
     <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0"
@@ -225,7 +225,7 @@ function generateEmailHtml(Issue[] issues, int remainingCount) returns string {
                         <td>
                             <p style="margin:0 0 4px;${FONT_MONO}font-size:10px;font-weight:600;${STYLE_TEXT_MUTED}letter-spacing:0.12em;text-transform:uppercase;">Issue Summary</p>
                             <p style="margin:0;${FONT_SANS}font-size:22px;font-weight:600;${STYLE_TEXT_PRIMARY}line-height:1.2;">
-                                ${issueCount} open issue${issueCount > 1 ? "s" : ""}
+                                ${totalCount} issue${totalCount > 1 ? "s" : ""} in this summary
                             </p>
                         </td>
                         <td width="36" align="right" valign="top">
